@@ -1,0 +1,30 @@
+---
+- name: add docker repo
+  copy: src=./files/docker.repo dest=/etc/yum.repos.d/docker.repo
+
+- name: load overlay support kernel module
+  copy: src=./files/overlay.conf  dest=/etc/modules-load.d/overlay.conf
+
+- name: install docker-engine
+  yum: name=docker-engine state=present 
+
+
+- name: enable docker at startup
+  sysctl: name=docker state=present
+
+- name: add docker group 
+  group: name=docker state=present
+
+- name: add centos user to docker group
+  user: name=centos shell=/bin/bash group=docker append=yes
+
+- name: start docker service
+  service: name=docker state=started
+#  service: name=docker state=stopped
+
+- name: check whether docker is up?
+  command: docker ps
+  changed_when: False
+  register: docker_command_output
+
+- debug: var=docker_command_output.stdout

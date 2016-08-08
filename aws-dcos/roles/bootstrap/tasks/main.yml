@@ -1,0 +1,25 @@
+---
+- name: download DCOS installer -- dcos_generate_config.sh -- to /root/
+  get_url: url=https://downloads.dcos.io/dcos/EarlyAccess/dcos_generate_config.sh dest=/root/dcos_generate_config.sh
+
+- name: generate hash-password 
+  command: /root/dcos_generate_config.sh --hash-password Deloitte
+# need to capture this password everytime ?
+
+- name: copy ip-detect ,ssh_key and config.yaml to /root/genconf
+  copy: src=./files/genconf dest=/root
+
+- name: set execution permission to dcos_generate_config.sh
+  file: path=/root/dcos_generate_config.sh state=file mode="u+x"        
+
+- name: set execution permission to ip-detect file
+  file: path=/root/genconf/ip-detect state=file mode="u+x"
+
+- name: generate cluster installer which can be distributed to master and slave nodes 
+  command: /root/dcos_generate_config.sh chdir=/root creates=/root/genconf/serve
+
+- name: copy simple-http-server for hosting the installer
+  copy: src=./files/simple-http-server.sh  dest=/root/genconf/serve mode="u+rxw"
+
+- name: host the installers using httpserver
+  shell: ./simple-http-server.sh& chdir=/root/genconf/serve

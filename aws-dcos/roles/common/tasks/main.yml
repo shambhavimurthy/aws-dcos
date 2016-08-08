@@ -1,0 +1,27 @@
+---
+- name: update yum packages to latest
+  yum: name=* state=latest
+
+- name: update essential softwares 
+  yum: name={{ item }} state=latest
+  with_items: 
+    - git
+    - wget
+    - curl 
+    - zsh 
+    - tar
+    - unzip
+    - ipset
+    - vim
+    - lvm2
+    - tree
+#    - htop
+
+- name: install oh-my-zsh
+  shell: sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" creates=~/.oh-my-zsh
+
+- name: replace the theme name to ys
+  replace: dest=~/.zshrc regexp='robbyrussell' replace='ys' backup=yes
+
+#- name: reload the .zshrc file
+#  shell: source ~/.zshrc

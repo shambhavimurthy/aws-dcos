@@ -1,0 +1,9 @@
+---
+- hosts: all 
+  gather_facts: False
+  become: True
+  roles:
+    - role: common
+    - role: docker
+    - role: lvm 
+

@@ -1,0 +1,12 @@
+---
+- name: create /tmp/dcos folder 
+  file: path=/tmp/dcos state=directory mode=0755
+
+- name: download DCOS installer from bootstrap and place it under /tmp/dcos
+  get_url: url=http://50.16.156.130/dcos_install.sh dest=/tmp/dcos
+  
+- name: set execution permission to dcos_install.sh 
+  file: path=/tmp/dcos/dcos_install.sh mode="u+x"
+
+- name: run the slave installer
+  command: ./dcos_install.sh slave chdir=/tmp/dcos

@@ -1,0 +1,11 @@
+bootstrap_url: http://50.16.156.130
+cluster_name: aws-dcos-cluster
+master_discovery: static
+master_list:
+- 52.4.26.76
+resolvers:
+- 8.8.4.4
+- 8.8.8.8
+superuser_password_hash: $6$rounds=656000$YEroL8VPP2qZDsSg$2ydUOhYnAO8EN8zPcEte49KhX2S58Pg4wKAkLOqc7BbnhaJ075xT58vF9XfTcDxPeX4V3Zd60ojPHhctmm37u1
+superuser_username: centos
+#TODO: param user,bootstrap_url,clustername,password
